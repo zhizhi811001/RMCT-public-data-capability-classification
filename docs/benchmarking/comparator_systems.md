@@ -173,7 +173,7 @@ RMCT differs from BM25 and dense embedding retrieval because it first normalises
 | LLM-assisted classification | Evidence-based AI judgement | Interprets ambiguous evidence | Costly, prompt-sensitive and less transparent |
 | RMCT-based retrieval | Proposed structured capability approach | Multi-dimensional, interpretable and capability-specific | Depends on vocabulary quality and public evidence availability |
 
-## 8. Recommended Evaluation Metrics
+## 8. Evaluation Metrics
 
 Where expert relevance labels are available, the comparator systems should be evaluated using:
 
