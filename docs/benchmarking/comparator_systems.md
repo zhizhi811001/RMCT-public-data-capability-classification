@@ -81,14 +81,6 @@ Sim_{\mathrm{emb}}(b_q,d_i)=
 $$
 
 
-The embedding retrieval result is:
-
-
-$$
-R_{\mathrm{Emb},q}=\operatorname{rank}_{f_i \in F}\left(Sim_{\mathrm{emb}}(b_q,d_i)\right)
-$$
-
-
 This baseline captures semantic similarity beyond exact keyword overlap. However, document-level semantic similarity may retrieve firms whose websites are generally related to the brief without satisfying all required capability constraints.
 
 ## 5. LLM-Assisted Retrieval or Classification Baseline
