@@ -1,4 +1,4 @@
-# Comparator Systems for RMCT Benchmarking
+﻿# Comparator Systems for RMCT Benchmarking
 
 This document defines the comparator systems used to evaluate whether the Regional Manufacturing Capability Taxonomy (RMCT) improves public-data-driven manufacturing partner discovery and sourcing search.
 
@@ -8,11 +8,11 @@ The comparators are designed to represent realistic alternatives available to en
 
 Let:
 
-- \(F=\{f_1,\ldots,f_N\}\) denote the set of manufacturers with usable website text;
-- \(N=888\) denote the number of firms with usable public website text in the current corpus;
-- \(B=\{b_1,\ldots,b_Q\}\) denote the set of practitioner-style sourcing briefs;
-- \(R_{s,q}\) denote the candidate firms retrieved by system \(s\) for brief \(q\);
-- \(G_q\) denote the expert-labelled relevant firm set for brief \(q\), where available.
+- $F=\{f_1,\ldots,f_N\}$ denote the set of manufacturers with usable website text;
+- $N=888$ denote the number of firms with usable public website text in the current corpus;
+- $B=\{b_1,\ldots,b_Q\}$ denote the set of practitioner-style sourcing briefs;
+- $R_{s,q}$ denote the candidate firms retrieved by system $s$ for brief $q$;
+- $G_q$ denote the expert-labelled relevant firm set for brief $q$, where available.
 
 All comparator systems use the same public website corpus and the same sourcing briefs.
 
@@ -20,16 +20,18 @@ All comparator systems use the same public website corpus and the same sourcing 
 
 The SIC baseline represents the existing public industrial classification approach. For each sourcing brief, the closest SIC or process-family category is selected from the Companies House-derived manufacturer population frame. Firms assigned to that SIC family are returned as the candidate supplier pool.
 
-For brief \(b_q\), the SIC candidate set is:
+For brief $b_q$, the SIC candidate set is:
 
-\[
-R_{\text{SIC},q}=\{f_i \in F : SIC(f_i) \in SIC_q\}
-\]
+
+$$
+R_{\mathrm{SIC},q}=\{f_i \in F : SIC(f_i) \in SIC_q\}
+$$
+
 
 where:
 
-- \(SIC(f_i)\) is the SIC or process-family assignment for firm \(f_i\);
-- \(SIC_q\) is the SIC family selected as the closest public classification match for brief \(b_q\).
+- $SIC(f_i)$ is the SIC or process-family assignment for firm $f_i$;
+- $SIC_q$ is the SIC family selected as the closest public classification match for brief $b_q$.
 
 The SIC baseline is expected to provide broad coverage but limited capability specificity because SIC codes describe general economic activity rather than detailed process, material, certification, engineering or delivery capabilities.
 
@@ -37,28 +39,32 @@ The SIC baseline is expected to provide broad coverage but limited capability sp
 
 The BM25 baseline represents a strong lexical information retrieval method. The full practitioner brief is treated as a query and matched against the cleaned website text of each firm. BM25 ranks firms according to term frequency, inverse document frequency and document length normalisation.
 
-For brief \(b_q\) and firm document \(d_i\), the BM25 score is:
+For brief $b_q$ and firm document $d_i$, the BM25 score is:
 
-\[
+
+$$
 BM25(b_q,d_i)=\sum_{t \in b_q} IDF(t)
 \cdot
 \frac{tf(t,d_i)(k_1+1)}
 {tf(t,d_i)+k_1\left(1-b+b\frac{|d_i|}{avgdl}\right)}
-\]
+$$
+
 
 where:
 
-- \(t\) is a query term;
-- \(tf(t,d_i)\) is the frequency of term \(t\) in firm document \(d_i\);
-- \(|d_i|\) is the length of firm document \(d_i\);
-- \(avgdl\) is the average document length in the corpus;
-- \(k_1\) and \(b\) are BM25 parameters.
+- $t$ is a query term;
+- $tf(t,d_i)$ is the frequency of term $t$ in firm document $d_i$;
+- $|d_i|$ is the length of firm document $d_i$;
+- $avgdl$ is the average document length in the corpus;
+- $k_1$ and $b$ are BM25 parameters.
 
 The BM25 candidate list is:
 
-\[
-R_{\text{BM25},q}=rank_{f_i \in F}\left(BM25(b_q,d_i)\right)
-\]
+
+$$
+R_{\mathrm{BM25},q}=\operatorname{rank}_{f_i \in F}\left(BM25(b_q,d_i)\right)
+$$
+
 
 BM25 is a stronger comparator than simple keyword search because it accounts for term informativeness and document length. However, it remains lexical and does not provide an explicit capability structure.
 
@@ -68,22 +74,26 @@ The dense embedding baseline evaluates semantic search over public website text.
 
 Let:
 
-- \(e(b_q)\) denote the embedding of brief \(b_q\);
-- \(e(d_i)\) denote the embedding of firm document \(d_i\).
+- $e(b_q)$ denote the embedding of brief $b_q$;
+- $e(d_i)$ denote the embedding of firm document $d_i$.
 
 The semantic similarity score is:
 
-\[
-Sim_{\text{emb}}(b_q,d_i)=
+
+$$
+Sim_{\mathrm{emb}}(b_q,d_i)=
 \frac{e(b_q)\cdot e(d_i)}
 {\|e(b_q)\|\|e(d_i)\|}
-\]
+$$
+
 
 The embedding retrieval result is:
 
-\[
-R_{\text{Emb},q}=rank_{f_i \in F}\left(Sim_{\text{emb}}(b_q,d_i)\right)
-\]
+
+$$
+R_{\mathrm{Emb},q}=\operatorname{rank}_{f_i \in F}\left(Sim_{\mathrm{emb}}(b_q,d_i)\right)
+$$
+
 
 This baseline captures semantic similarity beyond exact keyword overlap. However, document-level semantic similarity may retrieve firms whose websites are generally related to the brief without satisfying all required capability constraints.
 
@@ -96,22 +106,26 @@ The LLM-assisted baseline evaluates whether a large language model can classify 
 3. a fixed prompt template;
 4. a fixed model and decoding configuration.
 
-For each brief-firm pair \((b_q,f_i)\), the LLM returns:
+For each brief-firm pair $(b_q,f_i)$, the LLM returns:
 
-\[
+
+$$
 LLM(b_q,e_i) \rightarrow y_{q,i}
-\]
+$$
+
 
 where:
 
-- \(e_i\) is the evidence snippet for firm \(f_i\);
-- \(y_{q,i}\in\{\text{Relevant}, \text{Partly relevant}, \text{Not relevant}, \text{Unclear}\}\).
+- $e_i$ is the evidence snippet for firm $f_i$;
+- $y_{q,i}\in\{\text{Relevant}, \text{Partly relevant}, \text{Not relevant}, \text{Unclear}\}$.
 
 The LLM candidate set can be defined as:
 
-\[
-R_{\text{LLM},q}=\{f_i \in F : y_{q,i} \in \{\text{Relevant}, \text{Partly relevant}\}\}
-\]
+
+$$
+R_{\mathrm{LLM},q}=\{f_i \in F : y_{q,i} \in \{\text{Relevant}, \text{Partly relevant}\}\}
+$$
+
 
 This baseline approximates human-like interpretation of noisy public evidence. However, it is more costly, more sensitive to prompt design and less transparent than BM25, embedding retrieval or RMCT-based retrieval.
 
@@ -119,47 +133,57 @@ This baseline approximates human-like interpretation of noisy public evidence. H
 
 RMCT-based retrieval represents the proposed structured public capability observability approach. Each practitioner brief is mapped to RMCT facets, preferred labels and alternative labels. Firm-level RMCT profiles are then searched to identify companies whose public evidence matches the required capability structure.
 
-For each brief \(b_q\), define the RMCT requirement set as:
+For each brief $b_q$, define the RMCT requirement set as:
 
-\[
+
+$$
 C_q=\{c_{q1},c_{q2},\ldots,c_{qm}\}
-\]
+$$
 
-where each \(c_{qj}\) is an RMCT concept, such as a process, material, certification, sector application, engineering support capability, digital capability, delivery-readiness attribute or sustainability-related capability.
 
-Each firm \(f_i\) has a public capability profile:
+where each $c_{qj}$ is an RMCT concept, such as a process, material, certification, sector application, engineering support capability, digital capability, delivery-readiness attribute or sustainability-related capability.
 
-\[
+Each firm $f_i$ has a public capability profile:
+
+
+$$
 P_i=\{p_{i1},p_{i2},\ldots,p_{in}\}
-\]
+$$
 
-where \(P_i\) contains RMCT preferred labels, narrower categories and broader facets detected from public website evidence.
+
+where $P_i$ contains RMCT preferred labels, narrower categories and broader facets detected from public website evidence.
 
 A simple RMCT match score is:
 
-\[
-Score_{\text{RMCT}}(b_q,f_i)=
+
+$$
+Score_{\mathrm{RMCT}}(b_q,f_i)=
 \frac{|C_q \cap P_i|}{|C_q|}
-\]
+$$
+
 
 A stricter candidate set can be defined as:
 
-\[
-R_{\text{RMCT},q}=\{f_i \in F : C_q \subseteq P_i\}
-\]
+
+$$
+R_{\mathrm{RMCT},q}=\{f_i \in F : C_q \subseteq P_i\}
+$$
+
 
 Where briefs include mandatory and desirable requirements, the score can be weighted:
 
-\[
-Score_{\text{RMCT}}(b_q,f_i)=
+
+$$
+Score_{\mathrm{RMCT}}(b_q,f_i)=
 \frac{\sum_{c \in C_q} w_c \cdot I(c \in P_i)}
 {\sum_{c \in C_q} w_c}
-\]
+$$
+
 
 where:
 
-- \(w_c\) is the weight assigned to requirement \(c\);
-- \(I(c \in P_i)\) equals 1 if firm \(f_i\)'s RMCT profile contains concept \(c\), and 0 otherwise.
+- $w_c$ is the weight assigned to requirement $c$;
+- $I(c \in P_i)$ equals 1 if firm $f_i$'s RMCT profile contains concept $c$, and 0 otherwise.
 
 RMCT differs from BM25 and dense embedding retrieval because it first normalises website language into a controlled vocabulary and then retrieves firms using structured, multi-dimensional capability requirements.
 
@@ -187,3 +211,4 @@ Where expert relevance labels are available, the comparator systems should be ev
 - screening effort per relevant firm.
 
 These metrics evaluate RMCT as a decision aid for manufacturing partner discovery rather than only as a classification structure.
+
