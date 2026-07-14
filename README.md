@@ -25,7 +25,7 @@ The repository supports the following research objectives:
 5. Benchmark RMCT against practical alternatives, including SIC codes, keyword-only search, and single-dimension capability baselines.
 6. Support expert validation and reproducibility without redistributing full raw website text.
 
-## 3. Repository Structure
+## 3. Structure
 
 ```text
 RMCT-public-data-capability-classification/
